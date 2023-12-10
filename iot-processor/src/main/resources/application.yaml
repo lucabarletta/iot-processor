@@ -1,0 +1,23 @@
+### general config
+spring:
+  iotProcessor:
+    influxdb:
+      url: ${influxUrl}
+      username: ${influxUsername}
+      password: ${influxPassword}
+      bucket: ${influxBucket:iotp}
+      org: ${influxOrg:iotp}
+
+---
+### dev specific config
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+### prod specific config
+spring:
+  config:
+    activate:
+      on-profile: prod
