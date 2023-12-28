@@ -4,16 +4,15 @@ import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.InfluxDBClientOptions;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Component
+@Profile("influx")
 public class InfluxDBClientBuilder {
     @Value("${spring.iotProcessor.influxdb.url}")
     private String url;
-
-    @Value("${spring.iotProcessor.influxdb.token}")
-    private String token;
 
     @Value("${spring.iotProcessor.influxdb.username}")
     private String username;

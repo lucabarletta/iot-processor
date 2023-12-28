@@ -7,7 +7,6 @@ spring:
       password: ${influxPassword}
       bucket: ${influxBucket:iotp}
       org: ${influxOrg:iotp}
-
 ---
 ### dev specific config
 spring:
