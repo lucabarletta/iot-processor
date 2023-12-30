@@ -1,5 +1,6 @@
 package IoTp.controllers;
 
+import IoTp.model.SensorData;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/sensordata")
 public class SensorDataController {
+
     @Produce("direct:sensorDataInput")
     private final ProducerTemplate producerTemplate;
 
@@ -18,7 +20,7 @@ public class SensorDataController {
     }
 
     @PostMapping("/send")
-    public void sendMessage(@RequestBody String message) {
-        producerTemplate.sendBody(message);
+    public void sendMessage(@RequestBody SensorData data) {
+        producerTemplate.sendBody(data);
     }
 }

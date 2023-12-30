@@ -10,20 +10,19 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Priority;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-// just as a template for future persitence service impl
+
 @Component
 @Profile("influx")
 public class InfluxDbService {
     private final InfluxDBClientBuilder influxDBClientBuilder;
-    public InfluxDbService(InfluxDBClientBuilder influxDBClientBuilder){
+
+    public InfluxDbService(InfluxDBClientBuilder influxDBClientBuilder) {
         this.influxDBClientBuilder = influxDBClientBuilder;
     }
 
@@ -102,5 +101,4 @@ public class InfluxDbService {
         @Column(timestamp = true)
         Instant time;
     }
-
 }

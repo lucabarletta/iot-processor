@@ -1,8 +1,7 @@
-package IoTp.camelQueue;
+package IoTp.config.camel;
 
 
 import IoTp.akka.TestConsumer;
-import org.apache.camel.Route;
 import org.apache.camel.RoutesBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class SensorDataRouteBuilder {
     @Bean()
     public RoutesBuilder dataRoutesBuilder() {
+        // TODO metrics
         return new RouteBuilder() {
             @Override
             public void configure() {

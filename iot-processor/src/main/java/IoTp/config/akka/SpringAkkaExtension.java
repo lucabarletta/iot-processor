@@ -1,4 +1,4 @@
-package IoTp.config;
+package IoTp.config.akka;
 
 import akka.actor.AbstractExtensionId;
 import akka.actor.ExtendedActorSystem;

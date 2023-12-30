@@ -1,14 +1,16 @@
 package IoTp.prototype;
 
-import IoTp.config.ActorComponent;
+import IoTp.config.akka.ActorComponent;
 import akka.actor.AbstractActor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @ActorComponent
 public class GreetingActor extends AbstractActor {
-    @Autowired
-    private GreetingService greetingService;
+    private final GreetingService greetingService;
+
+    public GreetingActor(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
 
     @Override
     public Receive createReceive() {
