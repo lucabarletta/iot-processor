@@ -1,4 +1,4 @@
-package IoTp.config.akka;
+package IoTp.config.akkaSpring;
 
 import akka.actor.ActorSystem;
 import com.typesafe.config.Config;

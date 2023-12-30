@@ -1,6 +1,6 @@
 package IoTp.prototype;
 
-import IoTp.config.akka.ActorComponent;
+import IoTp.config.akkaSpring.ActorComponent;
 import akka.actor.AbstractActor;
 
 

@@ -1,6 +1,6 @@
 package IoTp.prototype;
 
-import IoTp.config.akka.AkkaSpringSupport;
+import IoTp.config.akkaSpring.AkkaSpringSupport;
 import akka.actor.ActorRef;
 import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.PathVariable;

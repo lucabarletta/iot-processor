@@ -1,4 +1,4 @@
-package IoTp.controllers;
+package IoTp.controller;
 
 import IoTp.model.SensorData;
 import org.apache.camel.Produce;

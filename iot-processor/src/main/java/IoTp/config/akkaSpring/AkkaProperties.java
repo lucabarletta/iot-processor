@@ -1,4 +1,4 @@
-package IoTp.config.akka;
+package IoTp.config.akkaSpring;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
