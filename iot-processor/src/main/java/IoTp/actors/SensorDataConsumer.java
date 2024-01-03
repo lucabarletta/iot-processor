@@ -13,7 +13,7 @@ import java.time.Duration;
 @Component
 public class SensorDataConsumer extends AkkaSpringSupport {
     private ActorRef managerActor;
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
     @PostConstruct
     public void init() {
@@ -24,11 +24,11 @@ public class SensorDataConsumer extends AkkaSpringSupport {
         // TODO check if data is valid (UUID for Actor Ref)
         // TODO completeable Future with timeout for backpressure handling
         tell(message.getMessage().getBody(SensorData.class));
-        //managerActor.tell(message.getMessage().getBody(SensorData.class), ActorRef.noSender());
     }
 
     public void tell(SensorData sensorData) {
         try {
+//            this.managerActor.tell(sensorData, ActorRef.noSender());
             Patterns.ask(this.managerActor, sensorData, TIMEOUT).toCompletableFuture().get();
         } catch (Exception e) {
             throw new RuntimeException(e);
