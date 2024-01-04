@@ -32,9 +32,12 @@ public class ManagerActor extends AbstractActor {
 //                        child.tell(data, context().self());
 //                    }
                 })
-                .match(RemoveReferenceMessage.class, action -> {
-                    processingActorRegistry.remove(action.ref.path().name(), action.ref);
-                    Log.warn("removing ActorRef from registry: " + action.ref.path().name() + ". " + processingActorRegistry.size() + " left in the registry");
+                .match(String.class, s -> {
+                    Log.info("should be not first");
+                })
+                .match(ChildActorTerminationMessage.class, action -> {
+                    processingActorRegistry.remove(action.actorRef.path().name(), action.actorRef);
+                    Log.warn("removing ActorRef from registry: " + action.actorRef.path().name() + ". " + processingActorRegistry.size() + " left in the registry");
                 })
                 .build();
     }

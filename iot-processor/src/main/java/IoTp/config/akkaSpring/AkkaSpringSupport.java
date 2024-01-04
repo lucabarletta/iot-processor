@@ -11,8 +11,12 @@ public class AkkaSpringSupport {
     @Autowired
     private ActorSystem actorSystem;
 
-    protected ActorRef actorOf(Class<? extends Actor> actorClass) {
-        return actorSystem.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(actorSystem).props(actorClass), actorClass.getCanonicalName());
+    protected ActorRef actorOf(Class<? extends Actor> actorClass, String mailBoxName) {
+        if (!mailBoxName.isEmpty()) {
+            return actorSystem.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(actorSystem).props(actorClass).withMailbox(mailBoxName), actorClass.getCanonicalName());
+        } else {
+            return actorSystem.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(actorSystem).props(actorClass), actorClass.getCanonicalName());
+        }
     }
 
     protected ActorSelection actorSelection(String path) {

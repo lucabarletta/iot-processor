@@ -16,7 +16,7 @@ public class ProcessingActor extends AbstractActor {
     private static final Logger Log = LoggerFactory.getLogger(ProcessingActor.class);
 
     public ProcessingActor() {
-        getContext().setReceiveTimeout(Duration.create(30, TimeUnit.SECONDS));
+        getContext().setReceiveTimeout(Duration.create(5, TimeUnit.SECONDS));
     }
 
     @Override
@@ -32,7 +32,9 @@ public class ProcessingActor extends AbstractActor {
     }
 
     private void onReceiveTimeout() {
-        context().parent().tell(new RemoveReferenceMessage(context().self()), ActorRef.noSender());
+        context().parent().tell("first", ActorRef.noSender());
+        context().parent().tell(new ChildActorTerminationMessage(self()), ActorRef.noSender());
+
         getContext().stop(getSelf());
     }
 }

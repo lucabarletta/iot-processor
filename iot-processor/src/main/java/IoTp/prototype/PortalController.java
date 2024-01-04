@@ -14,12 +14,12 @@ public class PortalController extends AkkaSpringSupport {
 
     @PostConstruct
     public void init() {
-        greetingActor = actorOf(GreetingActor.class);
+        greetingActor = actorOf(GreetingActor.class, "");
     }
 
     @RequestMapping("/hello/{name}")
     public String hello(@PathVariable(name = "name") String name) {
         greetingActor.tell(name, ActorRef.noSender());
-        return "Hello "+name+"! Please check message on Console.";
+        return "Hello " + name + "! Please check message on Console.";
     }
 }
