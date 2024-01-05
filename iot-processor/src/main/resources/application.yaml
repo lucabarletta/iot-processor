@@ -10,6 +10,9 @@ spring:
 logging:
   level:
     root: info
+
+akka:
+  conf: application.conf
 ---
 ### dev specific config
 spring:
