@@ -27,8 +27,8 @@ public class ManagerActor extends AbstractActor {
                             getContext().actorOf(Props.create(ProcessingActor.class), data.sensorId())).tell(data, ActorRef.noSender());
                 })
                 .match(ChildActorTerminationMessage.class, action -> {
-                    processingActorRegistry.remove(action.actorRef.path().name(), action.actorRef);
-                    Log.warn("removing ActorRef from registry: " + action.actorRef.path().name() + ". " + processingActorRegistry.size() + " left in the registry");
+                    processingActorRegistry.remove(action.actorRef().path().name(), action.actorRef());
+                    Log.warn("removing ActorRef from registry: " + action.actorRef().path().name() + ". " + processingActorRegistry.size() + " left in the registry");
                 })
                 .build();
     }

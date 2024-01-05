@@ -1,0 +1,53 @@
+version: "3"
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    #  - prometheus-storage:/prometheus
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+    restart: always
+    ports:
+      - 9090:9090
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  influxdb:
+    container_name: influxdb
+    image: influxdb:latest
+    volumes:
+      - /var/lib/influxdb2
+      - ./influxdb/scripts:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
+    entrypoint: ["./entrypoint.sh"]
+    restart: on-failure:10
+    ports:
+      - ${DOCKER_INFLUXDB_INIT_PORT}:8086
+
+  telegraf:
+    container_name: telegraf
+    image: telegraf:latest
+    volumes:
+      - ${TELEGRAF_CFG_PATH}:/etc/telegraf/telegraf.conf:rw
+    env_file:
+      - .env
+    depends_on:
+      - influxdb
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    volumes:
+      #   - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    ports:
+      - 3000:3000
+    depends_on:
+      - influxdb
+#volumes:
+# influxdb-storage: {}
+# prometheus-storage: {}
+# grafana-storage: {}

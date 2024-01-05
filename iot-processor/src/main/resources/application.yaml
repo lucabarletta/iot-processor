@@ -10,9 +10,13 @@ spring:
 logging:
   level:
     root: info
-
 akka:
   conf: application.conf
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
 ---
 ### dev specific config
 spring:
