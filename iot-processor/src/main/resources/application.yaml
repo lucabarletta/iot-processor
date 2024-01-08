@@ -1,5 +1,10 @@
 ### general config
 spring:
+  devtools:
+    livereload:
+      enabled: false
+    restart:
+      enabled: false
   iotProcessor:
     influxdb:
       url: ${influxUrl}
@@ -8,11 +13,6 @@ spring:
       bucket: ${influxBucket:sensordata}
       org: ${influxOrg:iot-processor}
       token: ${influxToken}
-  devtools:
-    livereload:
-      enabled: false
-    restart:
-      enabled: false
 logging:
   level:
     root: info

@@ -22,7 +22,7 @@ public class ProcessingActor extends AbstractActor {
 
     public ProcessingActor() {
         getContext().setReceiveTimeout(Duration.create(20, TimeUnit.SECONDS));
-        child = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem()).props(PassivatorActor.class), "passivator_" + context().self().path().name());
+        child = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem()).props(PassivatorActor.class).withMailbox("my-priority-mailbox"), "passivator_" + context().self().path().name());
     }
 
     @Override
@@ -31,8 +31,9 @@ public class ProcessingActor extends AbstractActor {
                 .match(SensorData.class, data -> {
                             // TODO: implement logic for processing actors (state aggregation)
                             Log.info("received data: " + data + " context:" + context().self().path().name());
+                            // caching
                             sensorDataList.additem(data);
-                            if (sensorDataList.getSize() > 0) {
+                            if (sensorDataList.getSize() > 2) {
                                 child.tell(new SensorDataList(sensorDataList.getItems()), ActorRef.noSender());
                                 sensorDataList.reset();
                             }
@@ -44,10 +45,7 @@ public class ProcessingActor extends AbstractActor {
 
     private void onReceiveTimeout() {
         context().parent().tell(new TerminationMessage(self()), ActorRef.noSender());
-        context().children().foreach(t -> {
-            t.tell(new TerminationMessage(t), ActorRef.noSender());
-            return true;
-        });
+        child.tell(new TerminationMessage(context().self()), ActorRef.noSender());
         getContext().stop(getSelf());
     }
 }
