@@ -16,6 +16,9 @@ public class SensorDataAggregate {
     @Column(tag = true)
     private String sensorId;
 
+    @Column(tag = true)
+    private String customerId;
+
     @Column
     private double min;
 
@@ -87,11 +90,20 @@ public class SensorDataAggregate {
         this.median = median;
     }
 
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AggregatedSensorData{");
+        final StringBuilder sb = new StringBuilder("SensorDataAggregate{");
         sb.append("time=").append(time);
         sb.append(", sensorId='").append(sensorId).append('\'');
+        sb.append(", customerId='").append(customerId).append('\'');
         sb.append(", min=").append(min);
         sb.append(", max=").append(max);
         sb.append(", mean=").append(mean);
@@ -106,11 +118,11 @@ public class SensorDataAggregate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensorDataAggregate that = (SensorDataAggregate) o;
-        return Double.compare(min, that.min) == 0 && Double.compare(max, that.max) == 0 && Double.compare(mean, that.mean) == 0 && Double.compare(standardDeviation, that.standardDeviation) == 0 && Double.compare(median, that.median) == 0 && Objects.equals(time, that.time) && Objects.equals(sensorId, that.sensorId);
+        return Double.compare(min, that.min) == 0 && Double.compare(max, that.max) == 0 && Double.compare(mean, that.mean) == 0 && Double.compare(standardDeviation, that.standardDeviation) == 0 && Double.compare(median, that.median) == 0 && Objects.equals(time, that.time) && Objects.equals(sensorId, that.sensorId) && Objects.equals(customerId, that.customerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time, sensorId, min, max, mean, standardDeviation, median);
+        return Objects.hash(time, sensorId, customerId, min, max, mean, standardDeviation, median);
     }
 }
