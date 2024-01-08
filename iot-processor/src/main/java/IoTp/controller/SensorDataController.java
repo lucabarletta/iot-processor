@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/sensordata")
 public class SensorDataController {
@@ -20,7 +22,7 @@ public class SensorDataController {
     }
 
     @PostMapping("/send")
-    public void sendMessage(@RequestBody SensorData data) {
-        producerTemplate.sendBody(data);
+    public void sendMessage(@RequestBody List<SensorData> data) {
+        data.forEach(producerTemplate::sendBody);
     }
 }

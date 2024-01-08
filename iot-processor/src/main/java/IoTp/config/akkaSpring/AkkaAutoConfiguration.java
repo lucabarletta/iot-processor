@@ -1,6 +1,10 @@
 package IoTp.config.akkaSpring;
 
+import IoTp.actors.ProcessingActor;
+import akka.actor.Actor;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import jakarta.annotation.PostConstruct;
@@ -11,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 
 import java.util.ArrayList;

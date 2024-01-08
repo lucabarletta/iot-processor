@@ -1,0 +1,18 @@
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    isDefault: true
+    access: proxy
+  - name: InfluxDB_v2_Flux
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: iot-processor
+      defaultBucket: telegraf
+      tlsSkipVerify: true
+    secureJsonData:
+      token: c54a64aa5d5e9f2b1c6e351b3f2c984b25400235df85ea431b8219c92551f5dd
