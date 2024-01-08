@@ -16,9 +16,11 @@ public class SensorDataConsumer extends AkkaSpringSupport {
     private ActorRef managerActor;
     private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
+
+
     @PostConstruct
     public void init() {
-        managerActor = actorOf(ManagerActor.class, "my-priority-mailbox");
+        managerActor = actorOf(ManagerActor.class, "my-priority-mailbox", "manager");
     }
 
     public void log(Exchange message) {
