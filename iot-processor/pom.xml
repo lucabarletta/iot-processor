@@ -61,12 +61,12 @@
         <dependency>
             <groupId>com.influxdb</groupId>
             <artifactId>influxdb-client-java</artifactId>
-            <version>6.10.0</version>
+            <version>6.12.0</version>
         </dependency>
         <dependency>
             <groupId>com.influxdb</groupId>
             <artifactId>flux-dsl</artifactId>
-            <version>6.10.0</version>
+            <version>6.12.0</version>
         </dependency>
 
         <!-- Apache Camel -->
@@ -94,19 +94,19 @@
         <dependency>
             <groupId>io.kamon</groupId>
             <artifactId>kamon-bundle_2.13</artifactId>
-            <version>2.5.9</version>
+            <version>2.5.6</version>
         </dependency>
 
         <dependency>
             <groupId>io.kamon</groupId>
             <artifactId>kamon-akka_2.13</artifactId>
-            <version>2.5.9</version>
+            <version>2.5.6</version>
         </dependency>
 
         <dependency>
             <groupId>io.kamon</groupId>
             <artifactId>kamon-prometheus_2.13</artifactId>
-            <version>2.5.9</version>
+            <version>2.5.6</version>
         </dependency>
     </dependencies>
 

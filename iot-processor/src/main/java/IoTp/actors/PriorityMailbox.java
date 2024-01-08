@@ -1,5 +1,6 @@
 package IoTp.actors;
 
+import IoTp.model.TerminationMessage;
 import akka.actor.ActorSystem;
 import akka.dispatch.PriorityGenerator;
 import akka.dispatch.UnboundedPriorityMailbox;
@@ -14,7 +15,7 @@ public class PriorityMailbox extends UnboundedPriorityMailbox {
         super(new PriorityGenerator() {
             @Override
             public int gen(Object msg) {
-                if (msg instanceof ChildActorTerminationMessage) {
+                if (msg instanceof TerminationMessage) {
                     // has to be high priority due to actor registry in manager actor
                     return 0;
                 } else {

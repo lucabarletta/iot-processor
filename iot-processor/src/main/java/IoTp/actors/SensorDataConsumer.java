@@ -9,6 +9,7 @@ import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.Instant;
 
 @Component
 public class SensorDataConsumer extends AkkaSpringSupport {
@@ -27,8 +28,8 @@ public class SensorDataConsumer extends AkkaSpringSupport {
     }
 
     public void tell(SensorData sensorData) {
+        sensorData.setTime(Instant.now());
         try {
-//            this.managerActor.tell(sensorData, ActorRef.noSender());
             Patterns.ask(this.managerActor, sensorData, TIMEOUT).toCompletableFuture().get();
         } catch (Exception e) {
             throw new RuntimeException(e);

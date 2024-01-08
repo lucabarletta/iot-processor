@@ -1,6 +1,6 @@
 package IoTp;
 
-import IoTp.db.InfluxDBClientBuilder;
+import IoTp.actors.InfluxDBClientBuilder;
 import com.influxdb.annotations.Column;
 import com.influxdb.annotations.Measurement;
 import com.influxdb.client.WriteApiBlocking;
@@ -19,10 +19,10 @@ import java.util.List;
 
 @Component
 @Profile("influx")
-public class InfluxDbService {
+public class InfluxDbServicetempte {
     private final InfluxDBClientBuilder influxDBClientBuilder;
 
-    public InfluxDbService(InfluxDBClientBuilder influxDBClientBuilder) {
+    public InfluxDbServicetempte(InfluxDBClientBuilder influxDBClientBuilder) {
         this.influxDBClientBuilder = influxDBClientBuilder;
     }
 

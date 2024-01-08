@@ -26,6 +26,5 @@ public class SpringAkkaExtension extends AbstractExtensionId<SpringAkkaExtension
             return Props.create(
                     SpringActorProducer.class, applicationContext, actorClass);
         }
-
     }
 }

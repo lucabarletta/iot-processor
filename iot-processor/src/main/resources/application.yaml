@@ -5,8 +5,14 @@ spring:
       url: ${influxUrl}
       username: ${influxUsername}
       password: ${influxPassword}
-      bucket: ${influxBucket:iotp}
-      org: ${influxOrg:iotp}
+      bucket: ${influxBucket:sensordata}
+      org: ${influxOrg:iot-processor}
+      token: ${influxToken}
+  devtools:
+    livereload:
+      enabled: false
+    restart:
+      enabled: false
 logging:
   level:
     root: info

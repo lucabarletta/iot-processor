@@ -1,6 +1,7 @@
 package IoTp.actors;
 
 import IoTp.config.akkaSpring.ActorComponent;
+import IoTp.model.TerminationMessage;
 import IoTp.model.SensorData;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -22,13 +23,12 @@ public class ManagerActor extends AbstractActor {
                 .match(SensorData.class, data -> {
                     // NOTE: important to only dequeue amount of message the actor system can handle
                     context().sender().tell("ack", self());
-
-                    processingActorRegistry.computeIfAbsent(data.sensorId(), id ->
-                            getContext().actorOf(Props.create(ProcessingActor.class), data.sensorId())).tell(data, ActorRef.noSender());
+                    processingActorRegistry.computeIfAbsent(data.getSensorId(), id ->
+                            getContext().actorOf(Props.create(ProcessingActor.class), data.getSensorId())).tell(data, ActorRef.noSender());
                 })
-                .match(ChildActorTerminationMessage.class, action -> {
-                    processingActorRegistry.remove(action.actorRef().path().name(), action.actorRef());
-                    Log.warn("removing ActorRef from registry: " + action.actorRef().path().name() + ". " + processingActorRegistry.size() + " left in the registry");
+                .match(TerminationMessage.class, action -> {
+                    processingActorRegistry.remove(action.targetRef().path().name(), action.targetRef());
+                    Log.warn("removing ActorRef from registry: " + action.targetRef().path().name() + ". " + processingActorRegistry.size() + " left in the registry");
                 })
                 .build();
     }

@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class WebApplication {
 
     public static void main(String[] args) {
-        Kamon.init();
         SpringApplication.run(WebApplication.class, args);
     }
 }
