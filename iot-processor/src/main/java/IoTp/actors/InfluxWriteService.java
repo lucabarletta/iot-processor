@@ -21,9 +21,9 @@ public class InfluxWriteService {
         this.influxDBClientBuilder = influxDBClientBuilder;
 
         var writeOptions = WriteOptions.builder()
-                .batchSize(3)
-                .bufferLimit(6_000_000)
-                .flushInterval(3)
+                .batchSize(1_000)
+                .bufferLimit(100_000)
+                .flushInterval(10_000)
                 .build();
 
         writeApi = influxDBClientBuilder.getClient().makeWriteApi(writeOptions);
@@ -31,9 +31,9 @@ public class InfluxWriteService {
 
     public void persist(SensorDataList data, SensorDataAggregate aggregate) {
         for (var d : data.getItems()) {
-            writeApi.writeMeasurement(WritePrecision.MS, d);
+            writeApi.writeMeasurement(WritePrecision.US, d);
         }
-        writeApi.writeMeasurement(WritePrecision.MS, aggregate);
+        writeApi.writeMeasurement(WritePrecision.US, aggregate);
 
         Log.info("persisted: " + data.getSize() + " items");
         influxDBClientBuilder.getClient().close();
