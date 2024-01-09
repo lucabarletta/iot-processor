@@ -1,10 +1,5 @@
 ### general config
 spring:
-  devtools:
-    livereload:
-      enabled: false
-    restart:
-      enabled: false
   iotProcessor:
     influxdb:
       url: ${influxUrl}
@@ -13,16 +8,18 @@ spring:
       bucket: ${influxBucket:sensordata}
       org: ${influxOrg:iot-processor}
       token: ${influxToken}
+  actor-logic:
+    batch-processing-size: 2
 logging:
   level:
     root: info
 akka:
-  conf: application.conf
+  conf: classpath:/application.conf
 management:
   endpoints:
     web:
       exposure:
-        include: health,prometheus
+        include: '*'
 ---
 ### dev specific config
 spring:

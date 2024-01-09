@@ -6,8 +6,10 @@ import IoTp.actors.messageTypes.TerminationMessage;
 import IoTp.model.SensorData;
 import IoTp.model.SensorDataList;
 import akka.actor.*;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import scala.concurrent.duration.Duration;
 
 import java.util.concurrent.TimeUnit;
@@ -16,9 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class ProcessingActor extends AbstractActor {
     private static final Logger Log = LoggerFactory.getLogger(ProcessingActor.class);
     private final SensorDataList sensorDataList = new SensorDataList();
-    ActorRef child;
+    private final MeterRegistry meterRegistry;
+    private final ActorRef child;
 
-    public ProcessingActor() {
+    @Value("${spring.actor-logic.batch-processing-size}")
+    private int batchProcessingSize;
+
+    public ProcessingActor(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
         getContext().setReceiveTimeout(Duration.create(20, TimeUnit.SECONDS));
         child = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem()).props(PassivatorActor.class).withMailbox("priority-mailbox"), "passivator_" + context().self().path().name());
     }
@@ -27,11 +34,11 @@ public class ProcessingActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(SensorData.class, data -> {
-                            // TODO: implement logic for processing actors (state aggregation)
+                            meterRegistry.gauge("SensorValue: " + data.getSensorId(), data.getValue());
                             Log.info("received data: " + data + " context: " + context().self().path().name());
-                            // caching
+                            // caching for batch processing
                             sensorDataList.additem(data);
-                            if (sensorDataList.getSize() > 2) {
+                            if (sensorDataList.getSize() > batchProcessingSize) {
                                 child.tell(new SensorDataList(sensorDataList.getItems()), ActorRef.noSender());
                                 sensorDataList.reset();
                             }
