@@ -20,7 +20,7 @@ public class SensorDataConsumer extends AkkaSpringSupport {
 
     @PostConstruct
     public void init() {
-        managerActor = actorOf(ManagerActor.class, "my-priority-mailbox", "manager");
+        managerActor = actorOf(ManagerActor.class, "priority-mailbox", "manager");
     }
 
     public void log(Exchange message) {

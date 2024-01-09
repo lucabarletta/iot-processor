@@ -22,7 +22,7 @@ public class ProcessingActor extends AbstractActor {
 
     public ProcessingActor() {
         getContext().setReceiveTimeout(Duration.create(20, TimeUnit.SECONDS));
-        child = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem()).props(PassivatorActor.class).withMailbox("my-priority-mailbox"), "passivator_" + context().self().path().name());
+        child = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem()).props(PassivatorActor.class).withMailbox("priority-mailbox"), "passivator_" + context().self().path().name());
     }
 
     @Override
