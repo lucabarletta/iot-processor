@@ -1,4 +1,4 @@
-package IoTp.model;
+package IoTp.actors.messageTypes;
 
 import akka.actor.ActorRef;
 

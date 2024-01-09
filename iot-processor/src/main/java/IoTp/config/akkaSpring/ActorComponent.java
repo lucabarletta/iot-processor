@@ -15,11 +15,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ActorComponent {
 
-    /**
-     * register actor on cluster or not
-     * ClusterClientReceptionist.get(actorSystem).registerService(ref);
-     *
-     * @return registered indication
-     */
-    boolean registered() default false;
 }

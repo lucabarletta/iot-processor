@@ -1,5 +1,6 @@
-package IoTp.actors;
+package IoTp.config.camel;
 
+import IoTp.actors.ManagerActor;
 import IoTp.config.akkaSpring.AkkaSpringSupport;
 import IoTp.model.SensorData;
 import akka.actor.ActorRef;
@@ -25,7 +26,6 @@ public class SensorDataConsumer extends AkkaSpringSupport {
 
     public void log(Exchange message) {
         // TODO check if data is valid (UUID for Actor Ref)
-        // TODO completeable Future with timeout for backpressure handling
         tell(message.getMessage().getBody(SensorData.class));
     }
 

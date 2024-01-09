@@ -1,4 +1,4 @@
-package IoTp.actors;
+package IoTp.db;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
