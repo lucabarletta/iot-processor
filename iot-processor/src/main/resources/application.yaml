@@ -23,6 +23,8 @@ management:
     web:
       exposure:
         include: health,prometheus
+mockdata:
+  customerList: Customer1, Customer2, Customer3
 ---
 ### dev specific config
 spring:

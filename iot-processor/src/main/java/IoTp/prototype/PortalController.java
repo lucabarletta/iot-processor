@@ -14,7 +14,7 @@ public class PortalController extends AkkaSpringSupport {
 
     @PostConstruct
     public void init() {
-        greetingActor = actorOf(GreetingActor.class, "");
+        greetingActor = actorOf(GreetingActor.class, "", "greetingActor");
     }
 
     @RequestMapping("/hello/{name}")

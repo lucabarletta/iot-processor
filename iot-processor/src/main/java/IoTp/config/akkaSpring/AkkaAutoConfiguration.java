@@ -10,6 +10,7 @@ import com.typesafe.config.ConfigFactory;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -42,8 +43,9 @@ public class AkkaAutoConfiguration implements ApplicationContextAware {
     }
 
     @Bean(destroyMethod = "terminate")
+    @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
     public ActorSystem actorSystem() throws Exception {
-        String actorSystemName = "akkaActorSystemSpring";
+        String actorSystemName = "iot-actor-system";
         Resource conf = akkaProperties.getConf();
         ActorSystem system;
         if (conf == null) {
