@@ -3,9 +3,7 @@ package IoTp.db;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.InfluxDBClientOptions;
-import com.influxdb.client.WriteApiBlocking;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,9 +36,5 @@ public class InfluxDBClientBuilder {
                 .build();
 
         return InfluxDBClientFactory.create(options);
-    }
-
-    public WriteApiBlocking getWriteApi() {
-        return getClient().getWriteApiBlocking();
     }
 }

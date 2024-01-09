@@ -16,7 +16,6 @@ public class Testcontroller {
         this.influxDBClientBuilder = influxDBClientBuilder;
     }
 
-
     @RequestMapping("/test")
     public void hello() {
         var api = influxDBClientBuilder.getClient().getWriteApiBlocking();

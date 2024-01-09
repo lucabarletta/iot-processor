@@ -1,12 +1,11 @@
 package IoTp.actors;
 
-import IoTp.config.akkaSpring.ActorComponent;
 import IoTp.actors.messageTypes.TerminationMessage;
+import IoTp.config.akkaSpring.ActorComponent;
 import IoTp.config.akkaSpring.SpringAkkaExtension;
 import IoTp.model.SensorData;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
