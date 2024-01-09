@@ -55,12 +55,6 @@ public class AkkaAutoConfiguration implements ApplicationContextAware {
         return system;
     }
 
-    /**
-     * combine config from config file & settings
-     *
-     * @return AKKA config
-     * @throws Exception exception
-     */
     private Config combinedConfig() throws Exception {
         List<String> configItems = new ArrayList<>();
         if (akkaProperties.getActorProvider() != null) {

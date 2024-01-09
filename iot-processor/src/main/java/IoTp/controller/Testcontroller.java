@@ -1,6 +1,6 @@
 package IoTp.controller;
 
-import IoTp.actors.InfluxDBClientBuilder;
+import IoTp.db.InfluxDBClientBuilder;
 import IoTp.model.SensorData;
 import com.influxdb.client.domain.WritePrecision;
 import org.springframework.web.bind.annotation.RequestMapping;

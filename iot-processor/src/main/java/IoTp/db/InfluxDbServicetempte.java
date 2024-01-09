@@ -1,6 +1,6 @@
 package IoTp;
 
-import IoTp.actors.InfluxDBClientBuilder;
+import IoTp.db.InfluxDBClientBuilder;
 import com.influxdb.annotations.Column;
 import com.influxdb.annotations.Measurement;
 import com.influxdb.client.WriteApiBlocking;

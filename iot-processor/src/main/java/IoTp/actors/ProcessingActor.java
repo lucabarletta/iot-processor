@@ -2,14 +2,12 @@ package IoTp.actors;
 
 import IoTp.config.akkaSpring.ActorComponent;
 import IoTp.config.akkaSpring.SpringAkkaExtension;
-import IoTp.model.TerminationMessage;
+import IoTp.actors.messageTypes.TerminationMessage;
 import IoTp.model.SensorData;
 import IoTp.model.SensorDataList;
 import akka.actor.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import scala.concurrent.duration.Duration;
 
 import java.util.concurrent.TimeUnit;
@@ -30,7 +28,7 @@ public class ProcessingActor extends AbstractActor {
         return receiveBuilder()
                 .match(SensorData.class, data -> {
                             // TODO: implement logic for processing actors (state aggregation)
-                            Log.info("received data: " + data + " context:" + context().self().path().name());
+                            Log.info("received data: " + data + " context: " + context().self().path().name());
                             // caching
                             sensorDataList.additem(data);
                             if (sensorDataList.getSize() > 2) {
