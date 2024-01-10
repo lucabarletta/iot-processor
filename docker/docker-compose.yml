@@ -1,5 +1,21 @@
 version: "3"
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    volumes:
+      #  - rabbitmq-storage:/var/lib/rabbitmq
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./rabbitmq/plugins:/etc/rabbitmq/enabled_plugins"
+
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
   prometheus:
     container_name: prometheus
     image: prom/prometheus
