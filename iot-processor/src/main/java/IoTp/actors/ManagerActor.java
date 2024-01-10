@@ -32,11 +32,10 @@ public class ManagerActor extends AbstractActor {
                 .match(SensorData.class, data -> {
                     // NOTE: ack, important to only dequeue amount of message the actor system can process (backpressure)
                     context().sender().tell("ack", self());
-                    message++;
-                    Log.info("count messages: " + message);
-                    meterRegistry.counter("testCounter").increment();
+                    Log.info("context: " + context().self().path().name());
+                    Log.debug("context: " + context().self().path());
 
-                    processingActorRegistry.computeIfAbsent(data.getSensorId(), id -> {
+                    processingActorRegistry.computeIfAbsent("processingActor_" + data.getSensorId(), id -> {
                                 Log.info("create new processing actor for sensorId: " + data.getSensorId());
                                 meterRegistry.gauge(ACTOR_COUNT_METRIC_KEY, processingActorRegistry.size() + 1);
                                 return getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem())
@@ -46,7 +45,6 @@ public class ManagerActor extends AbstractActor {
                 })
                 .match(TerminationMessage.class, action -> {
                     processingActorRegistry.remove(action.targetRef().path().name(), action.targetRef());
-                    meterRegistry.gauge(ACTOR_COUNT_METRIC_KEY, processingActorRegistry.size());
                     Log.info("removing ActorRef from registry: " + action.targetRef().path().name() + ". " + processingActorRegistry.size() + " actors in the registry");
                 })
                 .build();

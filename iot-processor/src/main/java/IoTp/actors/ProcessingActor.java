@@ -27,15 +27,22 @@ public class ProcessingActor extends AbstractActor {
     public ProcessingActor(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
         getContext().setReceiveTimeout(Duration.create(20, TimeUnit.SECONDS));
-        child = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem()).props(PassivatorActor.class).withMailbox("priority-mailbox"), "passivator_" + context().self().path().name());
+        child = getContext()
+                .actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext()
+                                .getSystem())
+                        .props(PassivatorActor.class)
+                        .withMailbox("priority-mailbox"), "passivatorActor_" + context().self().path().name());
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(SensorData.class, data -> {
+                            Log.info("context: " + context().self().path().name());
+                            Log.debug("context: " + context().self().path());
+
                             meterRegistry.gauge("SensorValue: " + data.getSensorId(), data.getValue());
-                            Log.info("received data: " + data + " context: " + context().self().path().name());
+                            // Log.info("received data: " + data + " context: " + context().self().path().name());
                             // caching for batch processing
                             sensorDataList.additem(data);
                             if (sensorDataList.getSize() > batchProcessingSize) {
@@ -50,7 +57,8 @@ public class ProcessingActor extends AbstractActor {
 
     private void onReceiveTimeout() {
         context().parent().tell(new TerminationMessage(self()), ActorRef.noSender());
-        child.tell(new TerminationMessage(context().self()), ActorRef.noSender());
+        //   child.tell(new TerminationMessage(context().self()), ActorRef.noSender());
+        getContext().stop(child);
         getContext().stop(getSelf());
     }
 }

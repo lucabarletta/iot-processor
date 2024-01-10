@@ -6,33 +6,37 @@ import IoTp.config.akkaSpring.SpringAkkaExtension;
 import IoTp.model.SensorData;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import akka.pattern.Patterns;
-import jakarta.annotation.PostConstruct;
 import org.apache.camel.Exchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.Instant;
 
 @Component
-public class SensorDataConsumer extends AkkaSpringSupport {
+public class ActorConnector extends AkkaSpringSupport {
     private final ActorRef managerActor;
     private static final Duration TIMEOUT = Duration.ofSeconds(5);
+    private static final Logger Log = LoggerFactory.getLogger(ActorConnector.class);
 
-    public SensorDataConsumer(ApplicationContext applicationContext) {
+    public ActorConnector(ApplicationContext applicationContext) {
         ActorSystem system = applicationContext.getBean(ActorSystem.class);
-        managerActor = system.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(system).props(ManagerActor.class).withMailbox("priority-mailbox"));
+        managerActor = system.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(system).props(ManagerActor.class).withMailbox("priority-mailbox"), "managerActor");
     }
 
     public void log(Exchange message) {
         // TODO check if data is valid (UUID for Actor Ref)
+        Log.info("recievied Object" + message);
         tell(message.getMessage().getBody(SensorData.class));
     }
 
-    public void tell(SensorData sensorData) {
-        sensorData.setTime(Instant.now());
+    public void process(SensorData sensorData) {
+        tell(sensorData);
+    }
+
+    private void tell(SensorData sensorData) {
         try {
             Patterns.ask(this.managerActor, sensorData, TIMEOUT).toCompletableFuture().get();
         } catch (Exception e) {
