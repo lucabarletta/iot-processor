@@ -43,7 +43,7 @@ public class AkkaAutoConfiguration implements ApplicationContextAware {
 
     @Bean(destroyMethod = "terminate")
     public ActorSystem actorSystem() throws Exception {
-        String actorSystemName = "akkaActorSystemSpring";
+        String actorSystemName = "iotActorSystem";
         Resource conf = akkaProperties.getConf();
         ActorSystem system;
         if (conf == null) {

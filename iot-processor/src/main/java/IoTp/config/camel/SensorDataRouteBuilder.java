@@ -22,7 +22,7 @@ public class SensorDataRouteBuilder {
                 // TODO metrics
                 from("seda:processSensorData")
                         .to("micrometer:counter:xyz?decrement=1")
-                        .bean(SensorDataConsumer.class, "log");
+                        .bean(ActorConnector.class, "log");
             }
         };
     }

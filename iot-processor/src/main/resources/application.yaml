@@ -10,6 +10,11 @@ spring:
       token: ${influxToken}
   actor-logic:
     batch-processing-size: 2
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password1234
 logging:
   level:
     root: info

@@ -1,0 +1,75 @@
+{
+  "users": [
+    {
+      "name": "user",
+      "password_hash": "BF6lI/2CXDVi7dU9yhCXaReTnlUMsjZb5cTkXJg8sOVew2aS",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    },
+    {
+      "name": "publisher",
+      "password_hash": "BF6lI/2CXDVi7dU9yhCXaReTnlUMsjZb5cTkXJg8sOVew2aS",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    }
+  ],
+  "vhosts": [{ "name": "/" }],
+  "policies": [
+    {
+      "vhost": "/",
+      "name": "ha",
+      "pattern": "",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic",
+        "ha-sync-batch-size": 5
+      }
+    }
+  ],
+  "permissions": [
+    {
+      "user": "user",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "publisher",
+      "vhost": "/",
+      "configure": "",
+      "write": ".*",
+      "read": ""
+    }
+  ],
+  "queues": [
+    {
+      "name": "iot.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "iot.exchange",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "iot.exchange",
+      "vhost": "/",
+      "destination": "iot.queue",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    }
+  ]
+}
