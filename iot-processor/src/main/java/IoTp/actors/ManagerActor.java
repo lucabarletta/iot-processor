@@ -6,6 +6,7 @@ import IoTp.config.akkaSpring.SpringAkkaExtension;
 import IoTp.model.SensorData;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import com.codahale.metrics.MetricRegistry;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class ManagerActor extends AbstractActor {
                 .match(SensorData.class, data -> {
                     // NOTE: ack, important to only dequeue amount of message the actor system can process (backpressure)
                     context().sender().tell("ack", self());
-                    Log.info("context: " + context().self().path().name());
+                    //Log.info("context: " + context().self().path().name());
                     Log.debug("context: " + context().self().path());
 
                     processingActorRegistry.computeIfAbsent("processingActor_" + data.getSensorId(), id -> {

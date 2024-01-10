@@ -9,7 +9,7 @@ spring:
       org: ${influxOrg:iot-processor}
       token: ${influxToken}
   actor-logic:
-    batch-processing-size: 2
+    batch-processing-size: 100
   rabbitmq:
     host: localhost
     port: 5672

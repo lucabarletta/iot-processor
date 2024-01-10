@@ -25,9 +25,9 @@ public class SensorDataPersistenceService {
         writeApi = influxDBClientBuilder.getClient()
                 .makeWriteApi(
                         WriteOptions.builder()
-                                .batchSize(3)
+                                .batchSize(1000)
                                 .bufferLimit(6_000_000)
-                                .flushInterval(3)
+                                .flushInterval(1000)
                                 .build()
                 );
     }
