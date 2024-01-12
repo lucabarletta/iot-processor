@@ -32,13 +32,6 @@ public class PassivatorActor extends AbstractActor {
                     Log.debug("context: " + context().self().path());
 
                     var aggregated = dataAggregationService.aggregate(sensorDataList);
-                    aggregated.ifPresent(sensorDataAggregate -> {
-                        meterRegistry.gauge(sensorDataAggregate.getSensorId() + "_min", sensorDataAggregate.getMin());
-                        meterRegistry.gauge(sensorDataAggregate.getSensorId() + "_max", sensorDataAggregate.getMax());
-                        meterRegistry.gauge(sensorDataAggregate.getSensorId() + "_mean", sensorDataAggregate.getMean());
-
-
-                    });
                     sensorDataPersistenceService.persist(sensorDataList, aggregated);
                 })
                 .match(TerminationMessage.class, terminationMessage -> {

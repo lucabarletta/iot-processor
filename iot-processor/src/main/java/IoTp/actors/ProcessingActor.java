@@ -41,7 +41,7 @@ public class ProcessingActor extends AbstractActor {
                             //Log.info("context: " + context().self().path().name());
                             Log.debug("context: " + context().self().path());
 
-                            meterRegistry.gauge("value of Sensor: " + data.getSensorId(), data.getValue());
+                            meterRegistry.gauge("sensor_" +data.getSensorId() + "_value", data.getValue());
                             // Log.info("received data: " + data + " context: " + context().self().path().name());
                             // caching for batch processing
                             sensorDataList.additem(data);

@@ -34,6 +34,17 @@ public class SensorDataAggregate {
     @Column
     private double median;
 
+    @Column
+    private double p95;
+
+    public double getP95() {
+        return p95;
+    }
+
+    public void setP95(double p95) {
+        this.p95 = p95;
+    }
+
     public Instant getTime() {
         return time;
     }
@@ -99,6 +110,19 @@ public class SensorDataAggregate {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SensorDataAggregate that = (SensorDataAggregate) o;
+        return Double.compare(min, that.min) == 0 && Double.compare(max, that.max) == 0 && Double.compare(mean, that.mean) == 0 && Double.compare(standardDeviation, that.standardDeviation) == 0 && Double.compare(median, that.median) == 0 && Double.compare(p95, that.p95) == 0 && Objects.equals(time, that.time) && Objects.equals(sensorId, that.sensorId) && Objects.equals(customerId, that.customerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(time, sensorId, customerId, min, max, mean, standardDeviation, median, p95);
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("SensorDataAggregate{");
         sb.append("time=").append(time);
@@ -109,20 +133,8 @@ public class SensorDataAggregate {
         sb.append(", mean=").append(mean);
         sb.append(", standardDeviation=").append(standardDeviation);
         sb.append(", median=").append(median);
+        sb.append(", p95=").append(p95);
         sb.append('}');
         return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SensorDataAggregate that = (SensorDataAggregate) o;
-        return Double.compare(min, that.min) == 0 && Double.compare(max, that.max) == 0 && Double.compare(mean, that.mean) == 0 && Double.compare(standardDeviation, that.standardDeviation) == 0 && Double.compare(median, that.median) == 0 && Objects.equals(time, that.time) && Objects.equals(sensorId, that.sensorId) && Objects.equals(customerId, that.customerId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(time, sensorId, customerId, min, max, mean, standardDeviation, median);
     }
 }

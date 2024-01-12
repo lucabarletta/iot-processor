@@ -25,6 +25,10 @@ public class SensorDataList {
         return items.size();
     }
 
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
     public void reset() {
         items = new ArrayList<>();
     }
