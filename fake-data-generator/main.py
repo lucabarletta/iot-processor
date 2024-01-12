@@ -1,3 +1,5 @@
+import sys
+
 import pika
 import json
 import random
@@ -10,6 +12,24 @@ rabbitmq_port = 5672
 queue_name = 'iot.queue'
 credentials = pika.PlainCredentials('user', 'password1234')
 continue_sending = True
+
+# Default values
+default_sleep_time = 0.001
+default_sensor_range = 10
+
+# Parse command line arguments
+if len(sys.argv) >= 3:
+    try:
+        sleep_time = float(sys.argv[1])
+        sensor_range = int(sys.argv[2])
+    except ValueError:
+        print("Invalid arguments. Using default values.")
+        sleep_time = default_sleep_time
+        sensor_range = default_sensor_range
+else:
+    print("Not enough arguments. Using default values.")
+    sleep_time = default_sleep_time
+    sensor_range = default_sensor_range
 
 
 def send_messages():
@@ -24,7 +44,7 @@ def send_messages():
         while continue_sending:
             test_data = {
                 "value": round(random.uniform(50, 150), 2),
-                "sensorId": f"sensor{random.randint(1, 10)}",
+                "sensorId": f"sensor{random.randint(1, sensor_range)}",
                 "customerId": "Customer1",
                 "time": datetime.utcnow().isoformat(timespec='milliseconds') + 'Z'
             }
@@ -39,7 +59,7 @@ def send_messages():
 
             print(f" [x] Sent {message}")
 
-            time.sleep(0.001)
+            time.sleep(sleep_time)
 
     except KeyboardInterrupt:
         print("Stopping message sending...")

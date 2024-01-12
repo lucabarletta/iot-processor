@@ -11,6 +11,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,9 +44,11 @@ public class ManagerActor extends AbstractActor {
                                         .props(ProcessingActor.class).withMailbox("priority-mailbox"), "processingActor_" + data.getSensorId());
                             }
                     ).tell(data, ActorRef.noSender());
+                    meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), processingActorRegistry);
                 })
                 .match(TerminationMessage.class, action -> {
                     processingActorRegistry.remove(action.targetRef().path().name(), action.targetRef());
+                    meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), processingActorRegistry);
                     Log.info("removing ActorRef from registry: " + action.targetRef().path().name() + ". " + processingActorRegistry.size() + " actors in the registry");
                 })
                 .build();
