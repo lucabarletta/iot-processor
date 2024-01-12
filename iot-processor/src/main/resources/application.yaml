@@ -13,8 +13,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
-    username: user
-    password: password1234
+    username: ${rabbitmqUsername}
+    password: ${rabbitmqPassword}
 logging:
   level:
     root: info
