@@ -28,9 +28,7 @@ public class PassivatorActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(SensorDataList.class, sensorDataList -> {
-                    //Log.info("context: " + context().self().path().name());
                     Log.debug("context: " + context().self().path());
-
                     var aggregated = dataAggregationService.aggregate(sensorDataList);
                     sensorDataPersistenceService.persist(sensorDataList, aggregated);
                 })
