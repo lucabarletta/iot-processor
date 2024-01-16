@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>iot</groupId>
-    <artifactId>iot-processor</artifactId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>IoT-Processor</name>
     <description>IoT Data Collector and Processor</description>
