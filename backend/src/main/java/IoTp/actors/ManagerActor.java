@@ -6,26 +6,34 @@ import IoTp.config.akkaSpring.SpringAkkaExtension;
 import IoTp.model.SensorData;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import com.codahale.metrics.MetricRegistry;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @ActorComponent
 public class ManagerActor extends AbstractActor {
     private static final Logger Log = LoggerFactory.getLogger(ManagerActor.class);
-
-    private final Map<String, ActorRef> processingActorRegistry = new ConcurrentHashMap<>();
-    private final String ACTOR_COUNT_METRIC_KEY = "processing-actor-count";
+    private final Map<String, ActorRef> dispatcherActorRegistry = new ConcurrentHashMap<>();
+    private final String ACTOR_COUNT_METRIC_KEY = "dispatcher-actor-count";
     private final MeterRegistry meterRegistry;
-    private int message = 0;
+    AtomicInteger counter = new AtomicInteger();
+    ActorRef nonExistingActor;
+
 
     public ManagerActor(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
+        meterRegistry.counter("ManagerActor_started").increment();
+
+        // Dead Letter Simulation - Actor will terminate instantly
+        nonExistingActor = getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem())
+                .props(DispatcherActor.class), "nonExistingActor");
+        getContext().stop(nonExistingActor);
     }
 
     @Override
@@ -34,22 +42,29 @@ public class ManagerActor extends AbstractActor {
                 .match(SensorData.class, data -> {
                     // NOTE: ack, important to only dequeue amount of message the actor system can process (backpressure)
                     context().sender().tell("ack", self());
-                    //Log.info("context: " + context().self().path().name());
                     Log.debug("context: " + context().self().path());
 
-                    processingActorRegistry.computeIfAbsent("processingActor_" + data.getSensorId(), id -> {
-                                Log.info("create new processing actor for sensorId: " + data.getSensorId());
-                                meterRegistry.gauge(ACTOR_COUNT_METRIC_KEY, processingActorRegistry.size() + 1);
+                    dispatcherActorRegistry.computeIfAbsent("dispatcherActor_" + data.getSensorId(), id -> {
+                                //Log.info("create new DispatcherActor for sensorId: " + data.getSensorId());
+                                meterRegistry.gauge(ACTOR_COUNT_METRIC_KEY, dispatcherActorRegistry.size() + 1);
                                 return getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem())
-                                        .props(ProcessingActor.class).withMailbox("priority-mailbox"), "processingActor_" + data.getSensorId());
+                                        .props(DispatcherActor.class).withMailbox("priority-mailbox"), "dispatcherActor_" + data.getSensorId());
                             }
                     ).tell(data, ActorRef.noSender());
-                    meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), processingActorRegistry);
+                    meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), dispatcherActorRegistry);
+
+                    // To simulate Deadletter
+                    counter.getAndIncrement();
+
+                    if (counter.get() > 10000) {
+                        nonExistingActor.tell("deadletter", ActorRef.noSender());
+                        counter.set(0);
+                    }
                 })
                 .match(TerminationMessage.class, action -> {
-                    processingActorRegistry.remove(action.targetRef().path().name(), action.targetRef());
-                    meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), processingActorRegistry);
-                    Log.info("removing ActorRef from registry: " + action.targetRef().path().name() + ". " + processingActorRegistry.size() + " actors in the registry");
+                    dispatcherActorRegistry.remove(action.targetRef().path().name(), action.targetRef());
+                    meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), dispatcherActorRegistry);
+                    //Log.info("removing Dispatcher ActorRef from registry: " + action.targetRef().path().name() + ". " + dispatcherActorRegistry.size() + " actors in the registry");
                 })
                 .build();
     }

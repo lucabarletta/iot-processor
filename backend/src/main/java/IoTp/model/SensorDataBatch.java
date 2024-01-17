@@ -3,14 +3,14 @@ package IoTp.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SensorDataList {
+public class SensorDataBatch {
     private List<SensorData> items = new ArrayList<>();
 
-    public SensorDataList(List<SensorData> items) {
+    public SensorDataBatch(List<SensorData> items) {
         this.items = items;
     }
 
-    public SensorDataList() {
+    public SensorDataBatch() {
     }
 
     public void additem(SensorData data) {

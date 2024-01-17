@@ -1,9 +1,7 @@
 package IoTp.services;
 
 import IoTp.model.SensorData;
-import IoTp.model.SensorDataDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.camel.tooling.model.Strings;

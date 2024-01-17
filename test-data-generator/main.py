@@ -46,7 +46,7 @@ def send_messages():
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(credentials=credentials, host=rabbitmq_host, port=rabbitmq_port, ))
     channel = connection.channel()
-    channel.queue_declare(queue=queue_name, durable=True)
+    channel.queue_declare(queue=queue_name, durable=False)
 
     try:
         while continue_sending:

@@ -2,7 +2,7 @@ package IoTp.services;
 
 import IoTp.model.SensorData;
 import IoTp.model.SensorDataAggregate;
-import IoTp.model.SensorDataList;
+import IoTp.model.SensorDataBatch;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.slf4j.Logger;
@@ -13,15 +13,15 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Component
-public class DataAggregationService {
+public class AggregationService {
     private final MeterRegistry meterRegistry;
-    private final static Logger Log = LoggerFactory.getLogger(DataAggregationService.class);
+    private final static Logger Log = LoggerFactory.getLogger(AggregationService.class);
 
-    public DataAggregationService(MeterRegistry meterRegistry) {
+    public AggregationService(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
     }
 
-    public Optional<SensorDataAggregate> aggregate(SensorDataList input) {
+    public Optional<SensorDataAggregate> aggregate(SensorDataBatch input) {
         return meterRegistry.timer("DataaggregationService_aggregate_duration").record(() -> {
             if (input.isEmpty()) {
                 return Optional.empty();

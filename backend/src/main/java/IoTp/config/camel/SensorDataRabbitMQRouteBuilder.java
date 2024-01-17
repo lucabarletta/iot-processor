@@ -21,7 +21,7 @@ public class SensorDataRabbitMQRouteBuilder {
                         .to("micrometer:counter:rabbitmq.inbound?increment=1")
                         .to("seda:rabbitmqSensorData");
                 from("seda:rabbitmqSensorData")
-                        .to("micrometer:counter:rabbitmq.outbound?decrement=1")
+                        .to("micrometer:counter:rabbitmq.inbound?decrement=1")
                         .bean(QueueMessageProcessor.class, "consume");
             }
         };

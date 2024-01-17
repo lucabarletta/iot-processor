@@ -2,7 +2,7 @@ package IoTp.services;
 
 import IoTp.db.InfluxDBClientBuilder;
 import IoTp.model.SensorDataAggregate;
-import IoTp.model.SensorDataList;
+import IoTp.model.SensorDataBatch;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.WriteOptions;
 import com.influxdb.client.domain.WritePrecision;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class SensorDataPersistenceService {
+public class PersistenceService {
 
     private final InfluxDBClientBuilder influxDBClientBuilder;
     private final WriteApi writeApi;
-    private final Logger Log = LoggerFactory.getLogger(SensorDataPersistenceService.class);
+    private final Logger Log = LoggerFactory.getLogger(PersistenceService.class);
 
-    public SensorDataPersistenceService(InfluxDBClientBuilder influxDBClientBuilder) {
+    public PersistenceService(InfluxDBClientBuilder influxDBClientBuilder) {
         this.influxDBClientBuilder = influxDBClientBuilder;
 
         writeApi = influxDBClientBuilder.getClient()
@@ -32,12 +32,12 @@ public class SensorDataPersistenceService {
                 );
     }
 
-    public void persist(SensorDataList data, Optional<SensorDataAggregate> aggregate) {
+    public void persist(SensorDataBatch data, Optional<SensorDataAggregate> aggregate) {
         aggregate.ifPresent(sensorDataAggregate -> writeApi.writeMeasurement(WritePrecision.MS, sensorDataAggregate));
         for (var d : data.getItems()) {
             writeApi.writeMeasurement(WritePrecision.MS, d);
         }
-        Log.info("persisted: " + data.getSize() + " items");
+        //Log.info("persisted: " + data.getSize() + " items");
         influxDBClientBuilder.getClient().close();
     }
 }

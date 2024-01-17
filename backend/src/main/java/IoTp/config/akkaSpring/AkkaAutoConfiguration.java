@@ -1,10 +1,9 @@
 package IoTp.config.akkaSpring;
 
-import IoTp.actors.ProcessingActor;
-import akka.actor.Actor;
+import IoTp.actors.DeadLetterActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
+import akka.actor.DeadLetter;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import jakarta.annotation.PostConstruct;
@@ -15,7 +14,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 
 import java.util.ArrayList;
@@ -51,7 +49,13 @@ public class AkkaAutoConfiguration implements ApplicationContextAware {
         } else {
             system = ActorSystem.create(actorSystemName, combinedConfig());
         }
+
         SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(system).initialize(applicationContext);
+
+        ActorRef deadLetterActor = system.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(system)
+                .props(DeadLetterActor.class), "deadLetterActor");
+        system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
+
         return system;
     }
 
