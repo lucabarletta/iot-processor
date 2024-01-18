@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "name": "user",
+      "name": "admin",
       "password_hash": "BF6lI/2CXDVi7dU9yhCXaReTnlUMsjZb5cTkXJg8sOVew2aS",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "administrator"
@@ -28,7 +28,7 @@
   ],
   "permissions": [
     {
-      "user": "user",
+      "user": "admin",
       "vhost": "/",
       "configure": ".*",
       "write": ".*",

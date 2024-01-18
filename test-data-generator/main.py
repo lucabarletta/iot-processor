@@ -1,20 +1,20 @@
-import sys
-
-import pika
 import json
 import random
-import time
+import sys
 import threading
-from datetime import datetime, timezone
+import time
+from datetime import datetime
+
+import pika
 
 rabbitmq_host = 'localhost'
 rabbitmq_port = 5672
 queue_name = 'iot.queue'
-credentials = pika.PlainCredentials('user', 'password1234')
+credentials = pika.PlainCredentials('admin', 'password1234')
 continue_sending = True
 
 # Default values
-default_sleep_time = 10
+default_sleep_time = 0.1
 default_sensor_range = 10
 default_max_value = 150
 default_min_value = 50

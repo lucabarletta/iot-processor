@@ -43,20 +43,18 @@ public class AkkaAutoConfiguration implements ApplicationContextAware {
     public ActorSystem actorSystem() throws Exception {
         String actorSystemName = "iotActorSystem";
         Resource conf = akkaProperties.getConf();
-        ActorSystem system;
+        ActorSystem actorSystem;
         if (conf == null) {
-            system = ActorSystem.create(actorSystemName);
+            actorSystem = ActorSystem.create(actorSystemName);
         } else {
-            system = ActorSystem.create(actorSystemName, combinedConfig());
+            actorSystem = ActorSystem.create(actorSystemName, combinedConfig());
         }
-
-        SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(system).initialize(applicationContext);
-
-        ActorRef deadLetterActor = system.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(system)
+        SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(actorSystem).initialize(applicationContext);
+        ActorRef deadLetterActor = actorSystem.actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(actorSystem)
                 .props(DeadLetterActor.class), "deadLetterActor");
-        system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
+        actorSystem.eventStream().subscribe(deadLetterActor, DeadLetter.class);
 
-        return system;
+        return actorSystem;
     }
 
     private Config combinedConfig() throws Exception {

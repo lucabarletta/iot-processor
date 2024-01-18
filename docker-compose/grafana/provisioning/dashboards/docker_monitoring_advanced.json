@@ -20,6 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 893,
   "graphTooltip": 1,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -63,7 +64,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 4,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -98,123 +99,6 @@
       ],
       "title": "Containers",
       "type": "stat"
-    },
-    {
-      "columns": [],
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "editable": true,
-      "error": false,
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 9,
-        "w": 4,
-        "x": 4,
-        "y": 0
-      },
-      "hideTimeOverride": false,
-      "id": 38,
-      "links": [],
-      "pageSize": 100,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "desc": false
-      },
-      "styles": [
-        {
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "cadvisor_version_info",
-          "intervalFactor": 2,
-          "legendFormat": "cAdvisor Version: {{cadvisorVersion}}",
-          "refId": "A",
-          "step": 2
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "prometheus_build_info",
-          "intervalFactor": 2,
-          "legendFormat": "Prometheus Version: {{version}}",
-          "refId": "B",
-          "step": 2
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "node_exporter_build_info",
-          "intervalFactor": 2,
-          "legendFormat": "Node-Exporter Version: {{version}}",
-          "refId": "C",
-          "step": 2
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "cadvisor_version_info",
-          "intervalFactor": 2,
-          "legendFormat": "Docker Version: {{dockerVersion}}",
-          "refId": "D",
-          "step": 2
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "cadvisor_version_info",
-          "intervalFactor": 2,
-          "legendFormat": "Host OS Version: {{osVersion}}",
-          "refId": "E",
-          "step": 2
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "cadvisor_version_info",
-          "intervalFactor": 2,
-          "legendFormat": "Host Kernel Version: {{kernelVersion}}",
-          "refId": "F",
-          "step": 2
-        }
-      ],
-      "title": "Image Versions",
-      "transform": "timeseries_aggregations",
-      "type": "table-old"
     },
     {
       "aliasColors": {},
@@ -882,7 +766,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {

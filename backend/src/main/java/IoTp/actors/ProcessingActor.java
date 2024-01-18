@@ -22,7 +22,7 @@ public class ProcessingActor extends AbstractActor {
         this.persistenceService = persistenceService;
         this.aggregationService = aggregationService;
         this.meterRegistry = meterRegistry;
-        meterRegistry.counter("ProcessingActor_started").increment();
+        meterRegistry.counter(getClass().getName() + "_started").increment();
     }
 
     @Override
@@ -41,8 +41,8 @@ public class ProcessingActor extends AbstractActor {
     }
 
     private void onTerminate() {
-        //Log.info("PassivatorActor terminate context: " + context().self().path().name());
-        meterRegistry.counter("ProcessingActor_terminated").increment();
+        Log.info("ProcessingActor terminate context: " + context().self().path().name());
+        meterRegistry.counter(getClass().getName() + "_terminated").increment();
         getContext().stop(getSelf());
     }
 }

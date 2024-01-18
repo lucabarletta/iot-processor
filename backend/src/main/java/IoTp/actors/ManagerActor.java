@@ -9,21 +9,27 @@ import akka.actor.ActorRef;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @ActorComponent
 public class ManagerActor extends AbstractActor {
+
     private static final Logger Log = LoggerFactory.getLogger(ManagerActor.class);
     private final Map<String, ActorRef> dispatcherActorRegistry = new ConcurrentHashMap<>();
     private final String ACTOR_COUNT_METRIC_KEY = "dispatcher-actor-count";
     private final MeterRegistry meterRegistry;
     AtomicInteger counter = new AtomicInteger();
     ActorRef nonExistingActor;
+
+    @Value("${spring.actor-logic.batch-processing-size}")
+    private int deadLetterCount;
 
 
     public ManagerActor(MeterRegistry meterRegistry) {
@@ -45,7 +51,7 @@ public class ManagerActor extends AbstractActor {
                     Log.debug("context: " + context().self().path());
 
                     dispatcherActorRegistry.computeIfAbsent("dispatcherActor_" + data.getSensorId(), id -> {
-                                //Log.info("create new DispatcherActor for sensorId: " + data.getSensorId());
+                                Log.info("create new DispatcherActor for sensorId: " + data.getSensorId());
                                 meterRegistry.gauge(ACTOR_COUNT_METRIC_KEY, dispatcherActorRegistry.size() + 1);
                                 return getContext().actorOf(SpringAkkaExtension.SPRING_EXTENSION_PROVIDER.get(getContext().getSystem())
                                         .props(DispatcherActor.class).withMailbox("priority-mailbox"), "dispatcherActor_" + data.getSensorId());
@@ -56,7 +62,7 @@ public class ManagerActor extends AbstractActor {
                     // To simulate Deadletter
                     counter.getAndIncrement();
 
-                    if (counter.get() > 10000) {
+                    if (counter.get() > 500) {
                         nonExistingActor.tell("deadletter", ActorRef.noSender());
                         counter.set(0);
                     }
@@ -64,7 +70,7 @@ public class ManagerActor extends AbstractActor {
                 .match(TerminationMessage.class, action -> {
                     dispatcherActorRegistry.remove(action.targetRef().path().name(), action.targetRef());
                     meterRegistry.gaugeMapSize("actorRegistry_size", List.of(), dispatcherActorRegistry);
-                    //Log.info("removing Dispatcher ActorRef from registry: " + action.targetRef().path().name() + ". " + dispatcherActorRegistry.size() + " actors in the registry");
+                    Log.info("removing Dispatcher ActorRef from registry: " + action.targetRef().path().name() + ". " + dispatcherActorRegistry.size() + " actors in the registry");
                 })
                 .build();
     }

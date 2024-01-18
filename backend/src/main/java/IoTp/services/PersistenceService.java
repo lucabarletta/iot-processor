@@ -37,7 +37,7 @@ public class PersistenceService {
         for (var d : data.getItems()) {
             writeApi.writeMeasurement(WritePrecision.MS, d);
         }
-        //Log.info("persisted: " + data.getSize() + " items");
+        Log.info("persisted: " + data.getSize() + " items");
         influxDBClientBuilder.getClient().close();
     }
 }

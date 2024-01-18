@@ -27,7 +27,7 @@ public class DispatcherActor extends AbstractActor {
 
     public DispatcherActor(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
-        getContext().setReceiveTimeout(Duration.create(5, TimeUnit.SECONDS));
+        getContext().setReceiveTimeout(Duration.create(20, TimeUnit.SECONDS));
         meterRegistry.counter("DispatcherActor_started").increment();
     }
 

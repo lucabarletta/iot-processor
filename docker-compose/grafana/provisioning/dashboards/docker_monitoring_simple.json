@@ -26,6 +26,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 15798,
   "graphTooltip": 1,
+  "id": 3,
   "links": [
     {
       "asDropdown": false,
@@ -739,118 +740,6 @@
       ],
       "title": "Network",
       "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": 600000,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              }
-            ]
-          },
-          "unit": "Bps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 24
-      },
-      "id": 8,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": ["mean", "sum", "last"],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum by (container) (rate(container_fs_reads_bytes_total{instance=~\"$node\",job=~\"$job\",image!=\"\", service=~\"$service\", container=~\"$container\"}[$__rate_interval]))",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "read {{container}}",
-          "metric": "container_fs_reads_bytes_total",
-          "range": true,
-          "refId": "read",
-          "step": 20
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "-(sum by (container) (rate(container_fs_writes_bytes_total{instance=~\"$node\",job=~\"$job\",image!=\"\", service=~\"$service\", container=~\"$container\"}[$__rate_interval])))",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "write {{container}}",
-          "range": true,
-          "refId": "write"
-        }
-      ],
-      "title": "Disk I/O",
       "type": "timeseries"
     }
   ],

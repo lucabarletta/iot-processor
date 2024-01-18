@@ -2,14 +2,14 @@ version: "3"
 services:
   node-exporter:
     image: prom/node-exporter:latest
-    container_name: monitoring_node_exporter
+    container_name: nodeExporter
     restart: unless-stopped
     expose:
       - 9100
 
   cadvisor:
     image: google/cadvisor:latest
-    container_name: monitoring_cadvisor
+    container_name: cAdvisor
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
@@ -84,6 +84,9 @@ services:
       #   - grafana-storage:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password1234
     ports:
       - 3000:3000
     depends_on:

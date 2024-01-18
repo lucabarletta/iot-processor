@@ -15,7 +15,6 @@ public class PriorityMailbox extends UnboundedPriorityMailbox {
             @Override
             public int gen(Object msg) {
                 if (msg instanceof TerminationMessage) {
-                    // has to be high priority due to actor registry in manager actor
                     return 0;
                 } else {
                     return 1;
