@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 893,
   "graphTooltip": 1,
-  "id": 2,
+  "id": 7,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -58,7 +58,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -81,10 +82,11 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.1",
       "targets": [
         {
           "datasource": {
@@ -111,6 +113,12 @@
       },
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "unitScale": true
+        },
+        "overrides": []
+      },
       "fill": 5,
       "fillGradient": 0,
       "grid": {},
@@ -141,7 +149,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -212,7 +220,7 @@
       "error": false,
       "fontSize": "100%",
       "gridPos": {
-        "h": 9,
+        "h": 11,
         "w": 8,
         "x": 0,
         "y": 9
@@ -294,11 +302,17 @@
       },
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "unitScale": true
+        },
+        "overrides": []
+      },
       "fill": 3,
       "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 9,
+        "h": 11,
         "w": 16,
         "x": 8,
         "y": 9
@@ -324,7 +338,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -401,14 +415,20 @@
       },
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "unitScale": true
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 11,
+        "h": 10,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 20
       },
       "hiddenSeries": false,
       "id": 8,
@@ -431,7 +451,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -506,14 +526,20 @@
       },
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "unitScale": true
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 11,
+        "h": 10,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 20
       },
       "hiddenSeries": false,
       "id": 9,
@@ -538,7 +564,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -766,7 +792,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {

@@ -1,5 +1,8 @@
 ### general config
 spring:
+  docker:
+    compose:
+      enabled: false
   iotProcessor:
     influxdb:
       url: ${influxUrl}
@@ -11,7 +14,7 @@ spring:
   actor-logic:
     batch-processing-size: 100
   rabbitmq:
-    host: localhost
+    host: ${rabbitmqHost}
     port: 5672
     username: ${rabbitmqUsername}
     password: ${rabbitmqPassword}
