@@ -1,11 +1,11 @@
-FROM openjdk:17-jdk-slim AS build
+FROM maven:3.8.4-openjdk-17-slim AS build
 
-COPY pom.xml mvnw ./
+COPY pom.xml ./
 COPY .mvn .mvn
-RUN ./mvnw dependency:resolve
+RUN mvn clean install
 
 COPY src src
-RUN ./mvnw package
+RUN mvn package
 
 FROM openjdk:17-jdk-slim
 WORKDIR /home/app
