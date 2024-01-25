@@ -1,6 +1,6 @@
 # Setup
 ## Prerequisities
-- Docker Compose Desktop (mainly for docker engine)
+- Docker Compose Desktop
 - Terminal (or VS Code with Docker Plugin)
 
 ## Running the System
