@@ -1,7 +1,7 @@
 # Setup
 ## Prerequisities
 - Docker Compose Desktop
-- Terminal (or VS Code with Docker Plugin)
+- Terminal (or Visual Studio Code with Docker Plugin)
 
 ## Running the System
 1. Clone this project
