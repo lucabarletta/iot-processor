@@ -1,50 +1,28 @@
 import json
 import random
-import sys
 import threading
 import time
 from datetime import datetime
 
 import pika
+from flask import Flask, request, jsonify
 
-rabbitmq_host = 'localhost'
-rabbitmq_port = 5672
-queue_name = 'iot.queue'
-credentials = pika.PlainCredentials('admin', 'password1234')
-continue_sending = True
+thread = None
 
-# Default values
-default_sleep_time = 0.1
-default_sensor_range = 10
-default_max_value = 150
-default_min_value = 50
+# Flask web server setup
+app = Flask(__name__)
 
-if len(sys.argv) >= 5:
-    try:
-        sleep_time = float(sys.argv[1])
-        sensor_range = int(sys.argv[2])
-        min_value = int(sys.argv[3])
-        max_value = int(sys.argv[4])
-
-    except ValueError:
-        print("Invalid arguments. Using default values.")
-        sleep_time = default_sleep_time
-        sensor_range = default_sensor_range
-        min_value = default_min_value
-        max_value = default_max_value
-else:
-    print("Not enough arguments. Using default values.")
-    sleep_time = default_sleep_time
-    sensor_range = default_sensor_range
-    min_value = default_min_value
-    max_value = default_max_value
-
-
-def send_messages():
+# Function to send messages, now with parameters
+def send_messages(sleep_time, sensor_range, min_value, max_value):
     global continue_sending
 
+    rabbitmq_host = 'rabbitmq'
+    rabbitmq_port = 5672
+    queue_name = 'iot.queue'
+    credentials = pika.PlainCredentials('admin', 'password1234')
+
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(credentials=credentials, host=rabbitmq_host, port=rabbitmq_port, ))
+        pika.ConnectionParameters(credentials=credentials, host=rabbitmq_host, port=rabbitmq_port))
     channel = connection.channel()
     channel.queue_declare(queue=queue_name, durable=False)
 
@@ -66,25 +44,51 @@ def send_messages():
                                   ))
 
             print(f" [x] Sent {message}")
-
             time.sleep(sleep_time)
 
     except KeyboardInterrupt:
         print("Stopping message sending...")
+    finally:
         connection.close()
 
+# Start the message sending process via REST call with parameters
+@app.route('/start', methods=['POST'])
+def start_script():
+    global continue_sending, thread
 
-thread = threading.Thread(target=send_messages)
-thread.start()
+    # Default values
+    default_sleep_time = 0.1
+    default_sensor_range = 10
+    default_max_value = 150
+    default_min_value = 50
 
-try:
-    while thread.is_alive():
-        thread.join(timeout=1)
+    data = request.json
+    sleep_time = data.get('sleep_time', default_sleep_time)
+    sensor_range = data.get('sensor_range', default_sensor_range)
+    min_value = data.get('min_value', default_min_value)
+    max_value = data.get('max_value', default_max_value)
 
-except KeyboardInterrupt:
-    print("Stopping message sending...")
-    continue_sending = False
-    thread.join()
+    if thread and thread.is_alive():
+        return jsonify({'status': 'Already running'}), 400
+
+    continue_sending = True
+    thread = threading.Thread(target=send_messages, args=(sleep_time, sensor_range, min_value, max_value))
+    thread.start()
+
+    return jsonify({'status': 'Started'}), 200
+
+# Stop the message sending process via REST call
+@app.route('/stop', methods=['POST'])
+def stop_script():
+    global continue_sending, thread
+
+    if thread and thread.is_alive():
+        continue_sending = False
+        thread.join()
+        return jsonify({'status': 'Stopped'}), 200
+    else:
+        return jsonify({'status': 'Not running'}), 400
+
 
 if __name__ == '__main__':
-    send_messages()
+    app.run(debug=True, host='0.0.0.0')
