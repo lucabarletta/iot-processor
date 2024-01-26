@@ -31,7 +31,7 @@ curl
   --url http://localhost:5000/stop \
   --header 'Content-Type: application/json'
   ```
-
+10. remove all images & containers ```docker rm $(docker ps -a -q)```
 ### Testdata Generator Parameters
 | param  |  definition  |
 |---|---|
