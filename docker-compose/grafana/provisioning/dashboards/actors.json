@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 7,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -77,7 +77,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -119,7 +120,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "(ProcessingActor_started_total - ProcessingActor_terminated_total) or ProcessingActor_started_total",
+          "expr": "(IoTp_actors_ProcessingActor_started_total - IoTp_actors_ProcessingActor_terminated_total) or IoTp_actors_ProcessingActor_terminated_total",
           "hide": false,
           "instant": false,
           "legendFormat": "ProcessingActors active",
@@ -133,7 +134,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "((DispatcherActor_started_total - DispatcherActor_terminated_total) or DispatcherActor_started_total) + ((ProcessingActor_started_total - ProcessingActor_terminated_total) or ProcessingActor_started_total)",
+          "expr": "((DispatcherActor_started_total - DispatcherActor_terminated_total) or DispatcherActor_started_total) + ((IoTp_actors_ProcessingActor_started_total - IoTp_actors_ProcessingActor_terminated_total) or IoTp_actors_ProcessingActor_terminated_total)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -200,7 +201,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -300,7 +302,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
