@@ -9,10 +9,8 @@ from flask import Flask, request, jsonify
 
 thread = None
 
-# Flask web server setup
 app = Flask(__name__)
 
-# Function to send messages, now with parameters
 def send_messages(sleep_time, sensor_range, min_value, max_value):
     global continue_sending
 
@@ -51,12 +49,10 @@ def send_messages(sleep_time, sensor_range, min_value, max_value):
     finally:
         connection.close()
 
-# Start the message sending process via REST call with parameters
 @app.route('/start', methods=['POST'])
 def start_script():
     global continue_sending, thread
 
-    # Default values
     default_sleep_time = 0.1
     default_sensor_range = 10
     default_max_value = 150
@@ -77,7 +73,6 @@ def start_script():
 
     return jsonify({'status': 'Started'}), 200
 
-# Stop the message sending process via REST call
 @app.route('/stop', methods=['POST'])
 def stop_script():
     global continue_sending, thread
