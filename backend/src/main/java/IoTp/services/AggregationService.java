@@ -15,14 +15,12 @@ import java.util.Optional;
 @Component
 public class AggregationService {
     private final MeterRegistry meterRegistry;
-    private final static Logger Log = LoggerFactory.getLogger(AggregationService.class);
-
     public AggregationService(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
     }
 
     public Optional<SensorDataAggregate> aggregate(SensorDataBatch input) {
-        return meterRegistry.timer("DataaggregationService_aggregate_duration").record(() -> {
+        return meterRegistry.timer("DataAggregationService_aggregate_duration").record(() -> {
             if (input.isEmpty()) {
                 return Optional.empty();
             }

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 @ActorComponent
 public class DeadLetterActor extends AbstractActor {
     private final MeterRegistry meterRegistry;
-    private final Logger Log = LoggerFactory.getLogger(DeadLetterActor.class);
 
     public DeadLetterActor(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
